@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<canvas id = "c">Обновите браузер</canvas>
+<script>
+    const canv = document.getElementById('c');
+    const g = canv.getContext('2d');
+    canv.height=400;
+    canv.width=400;
+    function circle(x,y,r,alf) {
+        const arr = [];
+        alf *= -1;
+        let cos = Math.cos(alf*(Math.PI/180));
+        let sin = Math.sin(alf*(Math.PI/180));
+        let rx = 0 - r;
+        let ry = 0;
+        arr[0] = (x + rx * sin + ry * cos);
+        arr[1] = (y + rx * cos - ry * sin);
+        return arr;
+    }
+    function draw(){
+            const date = new Date();
+            g.fillStyle='#fcca66';
+            g.beginPath();
+            g.arc(120,120, 120, 0,Math.PI*2, false);
+            g.fill();
+            for (let i = 1; i <= 12; i++){//подпись цифрами
+                g.fillStyle='#48b382';
+                g.beginPath();
+                let coor = circle(120,120,95,30*i);
+                g.arc(coor[0],coor[1], 15, 0,Math.PI*2, false);
+                g.fill();
+                g.font='bold 16px Arial';
+                g.fillStyle='#000';
+                if (i===11){
+                    g.fillText(i,(coor[0]-9),(coor[1]+5));
+                }else if(i>9){
+                    g.fillText(i,(coor[0]-10),(coor[1]+5));
+                }else {
+                    g.fillText(i,(coor[0]-5),(coor[1]+5));
+                }
+            }
+
+            g.strokeStyle='#000';
+            g.lineWidth=8;
+            g.lineCap='round';
+            g.beginPath();
+            coor = circle(120,120,10,(date.getHours()*30+180));
+            g.moveTo(coor[0],coor[1]);
+            coor = circle(120,120,50,(date.getHours()*30));
+            g.lineTo(coor[0],coor[1]);
+            g.stroke();
+
+            g.lineWidth=4;
+            g.beginPath();
+            coor = circle(120,120,10,(date.getMinutes()*6+180));
+            g.moveTo(coor[0],coor[1]);
+            coor = circle(120,120,60,(date.getMinutes()*6));
+            g.lineTo(coor[0],coor[1]);
+            g.stroke();
+
+            g.lineWidth=2;
+            g.beginPath();
+            coor = circle(120,120,10,(date.getSeconds()*6+180));
+            g.moveTo(coor[0],coor[1]);
+            coor = circle(120,120,80,(date.getSeconds()*6));
+            g.lineTo(coor[0],coor[1]);
+            g.stroke();
+
+            setTimeout(draw, 1000);
+        }
+    draw();
+</script>
+</body>
+</html>
